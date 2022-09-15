@@ -2,6 +2,7 @@ import os
 import discord
 import threading
 import time
+import openpyxl
 from datetime import date
 from slack_sdk import WebClient
 from slack_bolt import App
@@ -16,27 +17,40 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 
-def commands(str,bool,channel):
-    if "!msg" in str:
-        message(str[4:],not bool,channel)
+def commands(msg,bool,channel):
+    if "!msg" in msg:
+        message(msg[4:],not bool,channel)
         return False
-    elif "!read" in str:
+    elif "!read" in msg:
         with open(channel) as file:
             for line in file:
-                if str[5:] in line:
+                if msg[5:] in line:
                     message(line,bool,channel)
         return False  
-    elif "!wakeup" in str:
+    elif "!wakeup" in msg:
         if bool:
             i=25
             while i>0:
-                message("WAKE UP",True,str[10:len(str)-1])
+                message("WAKE UP",True,msg[10:len(str)-1])
                 time.sleep(0.5)
                 i-=1
-    elif "!help" in str:
-        message("!msg messages other app\n!read (slack only) searchs channel archive for the word you are looking for\n!wakeup (slack) sends user 25 DMS",bool,channel)
+    elif "!help" in msg:
+        message("!msg messages other app\n!find finds item in sorting system\n!read (slack only) searchs channel archive for the word you are looking for\n!wakeup (slack) sends user 25 DMS",bool,channel)
         return False
-    elif "@everyone" in str and bool:
+    elif "!find" in msg:
+        
+        wrkbk = openpyxl.load_workbook("sorting.xlsx")
+  
+        sh = wrkbk.active
+
+        for i in range(2, sh.max_row+1):      
+            for j in range(1, sh.max_column+1):
+                if msg[5:] in str(sh.cell(row=i, column=j).value):
+                    message(sh.cell(row=i, column=j).value+" can be found in "+sh.cell(row=i, column=1).value,bool,channel)
+        return False
+
+
+    elif "<!everyone>" in msg and bool:
         message("New announcement in slack",not bool,channel)
     
     return True

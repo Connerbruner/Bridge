@@ -8,11 +8,12 @@ authors = ["Your Name <you@example.com>"]
 python = ">=3.8.0,<3.9"
 numpy = "^1.22.2"
 replit = "^3.2.4"
-Flask = "^2.2.0"
 slack-client = "^0.3.0"
 "discord.py" = "^2.0.1"
 slack = "^0.0.2"
 slack-bolt = "^1.14.3"
+pandas = "^1.4.4"
+openpyxl = "^3.0.10"
 
 [tool.poetry.dev-dependencies]
 debugpy = "^1.6.2"
