@@ -35,17 +35,16 @@ def commands(msg,bool,channel):
                 time.sleep(0.5)
                 i-=1
     elif "!help" in msg:
-        message("!msg messages other app\n!find finds item in sorting system\n!read (slack only) searchs channel archive for the word you are looking for\n!wakeup (slack) sends user 25 DMS",bool,channel)
+        message("!msg messages other app\n!find finds item in sorting system\n!read (slack only) searchs channel archive for the word you are looking for\n!wakeup (slack only) sends user 25 DMS",bool,channel)
         return False
     elif "!find" in msg:
-        
         wrkbk = openpyxl.load_workbook("sorting.xlsx")
-  
+    
         sh = wrkbk.active
 
         for i in range(2, sh.max_row+1):      
             for j in range(1, sh.max_column+1):
-                if msg[5:] in str(sh.cell(row=i, column=j).value):
+                if msg[6:] in str(sh.cell(row=i, column=j).value):
                     message(sh.cell(row=i, column=j).value+" can be found in "+sh.cell(row=i, column=1).value,bool,channel)
         return False
 
